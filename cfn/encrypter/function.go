@@ -35,8 +35,6 @@ import (
 	"strings"
 )
 
-const fileToEnc = "data.txt"
-
 type encryptRequest struct {
 	Email string `json:"email"`
 }
