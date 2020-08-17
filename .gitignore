@@ -1,0 +1,5 @@
+.terraform*
+terraform.tfstat*
+*.tfvars
+pubkey.asc
+cfn/build
