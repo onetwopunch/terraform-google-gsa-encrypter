@@ -59,12 +59,12 @@ terraform apply
 
 ## Usage
 
-When you run the terraform, a new script will appear at `scripts/get-key` from a template. This is a basic wrapper
+When you run the terraform, a new script will appear at `get-key` from a template. This is a basic wrapper
 script that writes an encrypted file after invoking the cloud function. Feel free to take this and expand on it for
 your own use cases, or just run it as is.
 
 ```
-./scripts/get-key <sa-email>
+./get-key <sa-email>
 Success! Wrote encrypted key to <sa-email>.json.gpg
 ```
 
@@ -96,7 +96,7 @@ $ gcloud iam service-accounts create test-gsa --display-name "Test GSA"
 #### Create an encrypted key for that service account
 
 ```
-$ ./scripts/get-key test-gsa@<project-name>.iam.gserviceaccount.com
+$ ./get-key test-gsa@<project-name>.iam.gserviceaccount.com
 Success! Wrote encrypted key to test-gsa@<project-name>.iam.gserviceaccount.com.json.gpg
 ```
 

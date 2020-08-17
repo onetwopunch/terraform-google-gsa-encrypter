@@ -103,7 +103,7 @@ resource "google_cloudfunctions_function_iam_member" "invoker" {
 }
 
 resource "local_file" "invoker" {
-  filename        = "${path.module}/scripts/get-key"
+  filename        = "get-key"
   file_permission = "0755"
   content = templatefile("${path.module}/templates/get-key.tpl", {
     project  = var.project_id
