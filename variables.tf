@@ -21,7 +21,11 @@ variable "region" {
   description = "The region where the Cloud Function will run"
   default = "us-west2"
 }
-
+variable "function_name" {
+  type = string
+  description = "Name of the Cloud Function"
+  default = "gsa-encrypter"
+}
 variable "public_key_file" {
   type = string
   description = "Path of the ascii armored gpg public key. Create by running `gpg --export --armor <key-id> > pubkey.asc`"

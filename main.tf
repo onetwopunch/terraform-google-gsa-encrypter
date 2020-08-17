@@ -10,6 +10,7 @@ locals {
 
 resource "google_project_service" "project_service" {
   for_each = toset([
+    "iam.googleapis.com",
     "cloudbuild.googleapis.com",
     "cloudfunctions.googleapis.com",
   ])
@@ -19,7 +20,7 @@ resource "google_project_service" "project_service" {
 
 resource "google_storage_bucket" "cfn_bucket" {
   project       = var.project_id
-  name          = "${var.project_id}-cfn-gsa-encrypter"
+  name          = "${var.project_id}-cfn-${var.function_name}"
   location      = "US"
   force_destroy = true
 }
@@ -38,7 +39,7 @@ resource "google_storage_bucket_object" "archive" {
 
 resource "google_service_account" "gsa_encrypter" {
   project = var.project_id
-  account_id = "cfn-gsa-encrypter"
+  account_id = "cfn-${var.function_name}"
   display_name = "Cloud Function to generate and encrypt SA keys"
 }
 
@@ -60,7 +61,7 @@ resource "google_organization_iam_member" "gsa_encrypter" {
 resource "google_cloudfunctions_function" "function" {
   project     = var.project_id
   region      = var.region
-  name        = "gsa-encrypter"
+  name        = var.function_name
   description = "Generates and encrypts a new Service Account key given a GPG public key"
   runtime     = "go113"
   trigger_http = true
@@ -83,4 +84,14 @@ resource "google_cloudfunctions_function_iam_member" "invoker" {
 
   role   = "roles/cloudfunctions.invoker"
   member = each.value
+}
+
+resource "local_file" "invoker" {
+  filename = "${path.module}/scripts/get-key"
+  file_permission = "0755"
+  content = templatefile("${path.module}/templates/get-key.tpl", {
+    project = var.project_id
+    region = var.region
+    function = var.function_name
+  })
 }
