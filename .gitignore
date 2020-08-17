@@ -1,8 +1,8 @@
 .terraform*
 terraform.tfstat*
 *.tfvars
-pubkey.asc
+*.asc
 cfn/build
 scripts/*
 *.json
-*.gpp
+*.gpg

@@ -1,7 +1,23 @@
+/**
+ * Copyright 2020 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 variable "org_id" {
-  type = string
+  type        = string
   description = "Organization ID where the Cloud Function will have access to create Service Account keys."
-  default = ""
+  default     = ""
 }
 
 #  NOTE: Uncomment if you want to scope permissions to the folder level instead
@@ -17,23 +33,23 @@ variable "project_id" {
 }
 
 variable "region" {
-  type = string
+  type        = string
   description = "The region where the Cloud Function will run"
-  default = "us-west2"
+  default     = "us-west2"
 }
 variable "function_name" {
-  type = string
+  type        = string
   description = "Name of the Cloud Function"
-  default = "gsa-encrypter"
+  default     = "gsa-encrypter"
 }
 variable "public_key_file" {
-  type = string
+  type        = string
   description = "Path of the ascii armored gpg public key. Create by running `gpg --export --armor <key-id> > pubkey.asc`"
-  default = "pubkey.asc"
+  default     = "pubkey.asc"
 }
 
 variable "cfn_members" {
-  type = list
+  type        = list
   description = "List of IAM members (users, groups, etc) with the invoker permission on the CLoud Function"
-  default = []
+  default     = []
 }

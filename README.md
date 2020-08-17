@@ -1,6 +1,6 @@
 # GSA Encrypter
 Downloading Google Cloud Service Account (GSA) keys is [typically a bad idea](https://medium.com/@jryancanty/stop-downloading-google-cloud-service-account-keys-1811d44a97d9) but sometimes you can't help it.
-For example if you need to create a key to distribute to a CICD system like Jenkins, or you need to give some third party
+For example if you need to create a key to distribute to a CICD system on-prem like Jenkins, or you need to give some third party
 access to Google Cloud without giving them a user account. If you download the key and directly distribute it, not only is it
 directly visible to you, but it's in plain text in whatever storage medium you put it in (i.e. GCS, etc). A better idea would
 be to use [GPG](https://gnupg.org/) to download the key and encrypt it such that only the intended party can decrypt it. However,
@@ -17,19 +17,26 @@ account key, and the deployer of this function has access to the GPG public key.
 ## Deployment
 
 ### Prerequisites
+
+#### Required software:
+
+* [gpg](https://gnupg.org/) - Used for fetching and exporting public keys as well as decrypting
+* [terraform](https://www.terraform.io/downloads.html) - Used for deployment of the Cloud Function
+* [jq](https://stedolan.github.io/jq/) - Used to parse JSON response
+
 To use Terraform to deploy this Cloud Function, you'll first need to specify your variables.
 
 ```
 cp terraform.tfvars.sample terraform.tfvars
 ```
 
-Change the project, org and cfn_members to suit your needs.
+Change the `project_id`, `org` and `cfn_members` to suit your needs.
 
 Next we need to export the public key the Cloud Function will use. Make sure you have the key you need in your local
-gpg key chain. If it's in a public key server you can import it with:
+gpg key chain. If it's in a public key server you can download it with:
 
 ```
-gpg --recv-keys <key-id>
+gpg --receive-keys <key-id>
 ```
 
 Once it's there locally, you can export the ASCII armored version of it with this and store it into a file:
@@ -100,3 +107,20 @@ gpg --decrypt test-gsa@<project-name>.iam.gserviceaccount.com.json.gpg > credent
 ```
 
 At this point `credentials.json` should have valid Google Cloud credentials.
+
+
+## Development
+
+If you would like to run the code locally without deploying the Cloud Function, just start the server with:
+
+```
+make run
+```
+
+Then in a separate terminal, issue curl requests to the server on localhost:
+
+```
+curl -d '{"email": "test-gsa@<my-project>.iam.gserviceaccount.com"}' \
+  'http://localhost:8080/encrypt' | jq -r .encryptedKey | base64 --decode > data.gpg
+gpg --decrypt data.gpg
+```
