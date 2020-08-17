@@ -1,7 +1,14 @@
 # GSA Encrypter
+Downloading Google Cloud Service Account (GSA) keys is [typically a bad idea](https://medium.com/@jryancanty/stop-downloading-google-cloud-service-account-keys-1811d44a97d9) but sometimes you can't help it.
+For example if you need to create a key to distribute to a CICD system like Jenkins, or you need to give some third party
+access to Google Cloud without giving them a user account. If you download the key and directly distribute it, not only is it
+directly visible to you, but it's in plain text in whatever storage medium you put it in (i.e. GCS, etc). A better idea would
+be to use [GPG](https://gnupg.org/) to download the key and encrypt it such that only the intended party can decrypt it. However,
+in this case, the person downloading the key still has access to see it, which means they could accidentally commit it to Github,
+send it off to a friend, etc.
 
-This solution allows operators to generate a service account key for another system (e.g. CICD pipeline) or user without
-ever needing to see the key itself, adhering to the principle of least privilege. This is possible using assymmetric encryption
+This solution allows operators to generate a Google Cloud service account key for another system (e.g. CICD pipeline) or user without
+ever needing to see the key itself, adhering to the principle of least privilege. This is possible using asymmetric encryption
 and the GPG software utility. This assumes the receiving service has a GPG private key which can be used to decrypt the service
 account key, and the deployer of this function has access to the GPG public key.
 

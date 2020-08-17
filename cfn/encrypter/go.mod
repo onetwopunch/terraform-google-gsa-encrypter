@@ -1,4 +1,4 @@
-module github.com/onetwopunch/gsa-encrypter
+module github.com/onetwopunch/gsa-encrypter/cfn/encrypter
 
 go 1.14
 
