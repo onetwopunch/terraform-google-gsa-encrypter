@@ -37,6 +37,8 @@ module "gsa-encrypter" {
 }
 ```
 
+Note that version information is available on the [Terraform Registry](https://registry.terraform.io/modules/onetwopunch/gsa-encrypter/google)
+
 ### Prerequisites
 
 #### Required software:
