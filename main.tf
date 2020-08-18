@@ -18,7 +18,6 @@ locals {
   cfn_files = [
     "cfn/encrypter/function.go",
     "cfn/encrypter/go.mod",
-    "cfn/encrypter/go.sum",
   ]
   cfn_md5sums     = [for f in local.cfn_files : filemd5(f)]
   cfn_dirchecksum = md5(join("-", local.cfn_md5sums))
@@ -62,17 +61,18 @@ resource "google_service_account" "gsa_encrypter" {
 # NOTE: The Cloud Function will programmatically create keys
 # and encrypt them. This may need to happen across projects
 resource "google_organization_iam_member" "gsa_encrypter" {
+  count  = var.use_org_level_permissions ? 1 : 0
   member = "serviceAccount:${google_service_account.gsa_encrypter.email}"
   role   = "roles/iam.serviceAccountKeyAdmin"
   org_id = var.org_id
 }
 
-# NOTE: Uncomment if you want to scope permissions to the folder level instead of org.
-# resource "google_folder_iam_member" "gsa_encrypter" {
-#   member = "serviceAccount:${google_service_account.gsa_encrypter.email}"
-#   role = "roles/iam.serviceAccountKeyAdmin"
-#   folder_id = var.folder_id
-# }
+resource "google_folder_iam_member" "gsa_encrypter" {
+  count  = var.use_org_level_permissions ? 0 : 1
+  member = "serviceAccount:${google_service_account.gsa_encrypter.email}"
+  role   = "roles/iam.serviceAccountKeyAdmin"
+  folder = var.folder_id
+}
 
 resource "google_cloudfunctions_function" "function" {
   project      = var.project_id

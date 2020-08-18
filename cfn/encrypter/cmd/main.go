@@ -19,7 +19,7 @@ package main
 import (
     "net/http"
     "log"
-    "github.com/onetwopunch/gsa-encrypter/cfn/encrypter"
+    "github.com/onetwopunch/terraform-google-gsa-encrypter/cfn/encrypter"
 )
 // Used for local testing
 func main() {

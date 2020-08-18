@@ -20,12 +20,17 @@ variable "org_id" {
   default     = ""
 }
 
-#  NOTE: Uncomment if you want to scope permissions to the folder level instead
-# varible "folder_id" {
-#   type = string
-#   description = "Folder ID where the Cloud Function will have access to create Service Account keys."
-#   default = ""
-# }
+variable "folder_id" {
+  type        = string
+  description = "Folder ID where the Cloud Function will have access to create Service Account keys."
+  default     = ""
+}
+
+variable "use_org_level_permissions" {
+  type        = bool
+  description = "Whether to use Org or Project level permissions. If true, expect org_id to be set, otherwise, expect folder_id to be set."
+  default     = true
+}
 
 variable "project_id" {
   type        = string
@@ -52,4 +57,10 @@ variable "cfn_members" {
   type        = list
   description = "List of IAM members (users, groups, etc) with the invoker permission on the CLoud Function"
   default     = []
+}
+
+variable "create_wrapper_script" {
+  type        = bool
+  description = "Whether to create the get-key wrapper script"
+  default     = true
 }

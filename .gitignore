@@ -3,6 +3,7 @@ terraform.tfstat*
 *.tfvars
 *.asc
 cfn/build
-scripts/*
+get-key
 *.json
 *.gpg
+go.sum

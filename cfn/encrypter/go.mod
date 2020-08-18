@@ -1,4 +1,4 @@
-module github.com/onetwopunch/gsa-encrypter/cfn/encrypter
+module github.com/onetwopunch/terraform-google-gsa-encrypter/cfn/encrypter
 
 go 1.14
 
