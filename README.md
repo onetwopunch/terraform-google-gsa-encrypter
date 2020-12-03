@@ -1,3 +1,7 @@
+# DEPRECATED
+
+This module is no longer being maintained as it has moved to it's new location in the Cloud Foundation Toolkit: [terraform-google-service-accounts/modules/key-distributor](https://github.com/terraform-google-modules/terraform-google-service-accounts/tree/master/modules/key-distributor)
+
 # GSA Encrypter
 Downloading Google Cloud Service Account (GSA) keys is [typically a bad idea](https://medium.com/@jryancanty/stop-downloading-google-cloud-service-account-keys-1811d44a97d9) but sometimes you can't help it.
 For example if you need to create a key to distribute to a CICD system on-prem like Jenkins, or you need to give some third party
